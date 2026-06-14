@@ -1,3 +1,10 @@
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('E-KAS Menu')
+      .addItem('Sync / Hitung Ulang Saldo', 'updateSaldoKas')
+      .addToUi();
+}
+
 function doGet(e) {
   var action = e.parameter.action;
   
