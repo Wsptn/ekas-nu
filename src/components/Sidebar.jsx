@@ -1,50 +1,63 @@
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/login');
   };
 
+  const closeMobileSidebar = () => {
+    if (window.innerWidth <= 768) {
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header" style={{ height: '70px', padding: '0 1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderBottom: '1px solid var(--border-color)' }}>
-        <h2 style={{ fontSize: '1.25rem', margin: 0, fontWeight: 700, color: 'var(--primary-color)', lineHeight: 1.2 }}>E-KAS NU</h2>
-        <span style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: 1.2 }}>Ranting NU Karanganyar</span>
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <div className="sidebar-header" style={{ height: '70px', padding: '0 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <h2 style={{ fontSize: '1.25rem', margin: 0, fontWeight: 700, color: 'var(--primary-color)', lineHeight: 1.2 }}>E-KAS NU</h2>
+          <span style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: 1.2 }}>Ranting NU Karanganyar</span>
+        </div>
+        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
+          ☰
+        </button>
       </div>
       
       <nav className="sidebar-nav">
         <ul>
           <li>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/" end onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Dashboard
             </NavLink>
           </li>
           <li>
-            <NavLink to="/pemasukan" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/pemasukan" onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Pemasukan
             </NavLink>
           </li>
           <li>
-            <NavLink to="/pengeluaran" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/pengeluaran" onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Pengeluaran
             </NavLink>
           </li>
           <li>
-            <NavLink to="/kegiatan" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/kegiatan" onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Kegiatan
             </NavLink>
           </li>
           <li>
-            <NavLink to="/laporan" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/laporan" onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Laporan
             </NavLink>
           </li>
           <li>
-            <NavLink to="/users" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <NavLink to="/users" onClick={closeMobileSidebar} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
               Kelola User
             </NavLink>
           </li>

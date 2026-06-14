@@ -65,6 +65,16 @@
   border-top: 1px solid var(--border-color);
 }
 
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -74,11 +84,23 @@
     border-bottom: 1px solid var(--border-color);
   }
   
+  .mobile-toggle {
+    display: block;
+  }
+  
   .sidebar-nav {
-    display: none; /* In a real app, you'd add a hamburger menu */
+    display: none;
   }
   
   .sidebar-footer {
     display: none;
+  }
+
+  .sidebar.open .sidebar-nav {
+    display: block;
+  }
+
+  .sidebar.open .sidebar-footer {
+    display: block;
   }
 }
