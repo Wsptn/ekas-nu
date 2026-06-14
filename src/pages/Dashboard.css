@@ -1,0 +1,54 @@
+.page-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-grid {
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.summary-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  font-family: var(--font-family-heading);
+}
+
+.bg-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); }
+.bg-success { background: linear-gradient(135deg, var(--success-color), #059669); }
+.bg-danger { background: linear-gradient(135deg, var(--danger-color), #dc2626); }
+
+.mt-6 { margin-top: 1.5rem; }
+
+.chart-card {
+  padding: 1.5rem;
+}
+
+.chart-title {
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.chart-container {
+  height: 300px;
+  width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
