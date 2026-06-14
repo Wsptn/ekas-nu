@@ -69,7 +69,7 @@ const Login = () => {
     <div className="login-page">
       {/* Bagian Kiri: Aesthetic Caption */}
       <div className="login-aesthetic">
-        <div className="watermark-logo"></div>
+        <div className="watermark-logo" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}logo.png)` }}></div>
         <div className="aesthetic-content">
           <h1 className="aesthetic-title">Sistem Keuangan Modern & Transparan</h1>
           <p className="aesthetic-subtitle">
@@ -82,7 +82,7 @@ const Login = () => {
       <div className="login-container">
         <div className="login-card">
           <div className="login-header text-center">
-            <img src="/logo.png" alt="Logo NU" style={{ width: '80px', marginBottom: '1rem' }} onError={(e) => { e.target.style.display = 'none' }} />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Logo NU" style={{ width: '80px', marginBottom: '1rem' }} onError={(e) => { e.target.style.display = 'none' }} />
             <h1 className="login-title">Selamat Datang</h1>
             <p className="login-subtitle">Silakan login untuk mengakses E-KAS</p>
           </div>

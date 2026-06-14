@@ -58,10 +58,19 @@ const Pengeluaran = () => {
     
     const user = JSON.parse(localStorage.getItem('user'));
     
-    const nextId = data.length > 0 ? Math.max(...data.map(item => {
-      const parts = String(item.id_keluar).split('-');
-      return parts.length > 1 ? parseInt(parts[1]) || 0 : 0;
-    })) + 1 : 1;
+    let maxId = 0;
+    if (data.length > 0) {
+      data.forEach(item => {
+        const parts = String(item.id_keluar).split('-');
+        if (parts.length > 1) {
+          const num = parseInt(parts[1]) || 0;
+          if (num < 1000000 && num > maxId) {
+            maxId = num;
+          }
+        }
+      });
+    }
+    const nextId = maxId + 1;
 
     const payload = {
       id_keluar: `KLR-${nextId}`,
