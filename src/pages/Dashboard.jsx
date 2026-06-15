@@ -29,7 +29,16 @@ const Dashboard = () => {
     monthlyPemasukan: [0,0,0,0,0,0,0,0,0,0,0,0],
     monthlyPengeluaran: [0,0,0,0,0,0,0,0,0,0,0,0]
   });
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [loading, setLoading] = useState(true);
+
+  // Generate list of years from 2020 to current year
+  const startYear = 2020;
+  const years = [];
+  for (let y = currentYear; y >= startYear; y--) {
+    years.push(y);
+  }
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -49,7 +58,7 @@ const Dashboard = () => {
           return;
         }
 
-        const response = await fetch(`${API_URL}?action=getDashboard`);
+        const response = await fetch(`${API_URL}?action=getDashboard&year=${selectedYear}`);
         const result = await response.json();
         if (result.status === 'success') {
           setData(result.data);
@@ -62,7 +71,7 @@ const Dashboard = () => {
     };
 
     fetchDashboard();
-  }, []);
+  }, [selectedYear]);
 
   const formatRupiah = (number) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
@@ -107,7 +116,23 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard animate-fade-in">
-      <h2 className="page-title">Dashboard</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h2 className="page-title" style={{ marginBottom: 0 }}>Dashboard</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <label htmlFor="yearFilter" style={{ fontWeight: 600 }}>Tahun:</label>
+          <select 
+            id="yearFilter"
+            className="form-control" 
+            style={{ width: 'auto', padding: '0.25rem 0.5rem', minHeight: '38px' }}
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            {years.map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       
       <div className="summary-grid grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="card summary-card bg-primary text-white">
@@ -125,7 +150,7 @@ const Dashboard = () => {
       </div>
 
       <div className="card mt-6 chart-card">
-        <h3 className="chart-title">Grafik Pemasukan & Pengeluaran Tahun Ini</h3>
+        <h3 className="chart-title">Grafik Pemasukan & Pengeluaran Tahun {selectedYear}</h3>
         <div className="chart-container">
           <Bar options={chartOptions} data={chartData} />
         </div>

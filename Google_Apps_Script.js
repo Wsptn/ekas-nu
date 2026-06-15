@@ -9,7 +9,7 @@ function doGet(e) {
   var action = e.parameter.action;
   
   if(action == 'getDashboard') {
-    return getDashboard();
+    return getDashboard(e.parameter.year);
   } else if(action == 'getPemasukan') {
     return getSheetData('PEMASUKAN');
   } else if(action == 'getPengeluaran') {
@@ -120,7 +120,9 @@ function parseDateRobust(dateVal) {
   return new Date(str);
 }
 
-function getDashboard() {
+function getDashboard(yearStr) {
+  var targetYear = yearStr ? parseInt(yearStr) : new Date().getFullYear();
+  
   var sheetSaldo = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SALDO_KAS');
   var sheetPemasukan = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PEMASUKAN');
   var sheetPengeluaran = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PENGELUARAN');
@@ -143,7 +145,7 @@ function getDashboard() {
       if(!isNaN(d.getTime())) {
         var month = d.getMonth(); // 0-11
         // Optional: filter by current year if needed. We assume all data or just accumulate by month.
-        if (d.getFullYear() === new Date().getFullYear()) {
+        if (d.getFullYear() === targetYear) {
           monthlyPemasukan[month] += nominal;
         }
       }
@@ -161,7 +163,7 @@ function getDashboard() {
       var d = parseDateRobust(dataPengeluaran[i][1]); // kolom tanggal (index 1)
       if(!isNaN(d.getTime())) {
         var month = d.getMonth(); // 0-11
-        if (d.getFullYear() === new Date().getFullYear()) {
+        if (d.getFullYear() === targetYear) {
           monthlyPengeluaran[month] += nominal;
         }
       }
