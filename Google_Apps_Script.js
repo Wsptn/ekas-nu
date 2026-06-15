@@ -101,6 +101,25 @@ function getSheetData(sheetName) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+function parseDateRobust(dateVal) {
+  if (!dateVal) return new Date(NaN);
+  
+  if (dateVal instanceof Date) {
+    return dateVal;
+  }
+  
+  var str = String(dateVal).trim();
+  
+  // Format DD/MM/YYYY atau DD-MM-YYYY
+  var parts = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (parts) {
+    // parts[1] = DD, parts[2] = MM, parts[3] = YYYY
+    return new Date(parts[3], parts[2] - 1, parts[1]);
+  }
+  
+  return new Date(str);
+}
+
 function getDashboard() {
   var sheetSaldo = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SALDO_KAS');
   var sheetPemasukan = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PEMASUKAN');
@@ -120,7 +139,7 @@ function getDashboard() {
       var nominal = Number(dataPemasukan[i][5]) || 0;
       totalPemasukan += nominal; 
       
-      var d = new Date(dataPemasukan[i][1]); // kolom tanggal (index 1)
+      var d = parseDateRobust(dataPemasukan[i][1]); // kolom tanggal (index 1)
       if(!isNaN(d.getTime())) {
         var month = d.getMonth(); // 0-11
         // Optional: filter by current year if needed. We assume all data or just accumulate by month.
@@ -139,7 +158,7 @@ function getDashboard() {
       var nominal = Number(dataPengeluaran[i][5]) || 0;
       totalPengeluaran += nominal; 
       
-      var d = new Date(dataPengeluaran[i][1]); // kolom tanggal (index 1)
+      var d = parseDateRobust(dataPengeluaran[i][1]); // kolom tanggal (index 1)
       if(!isNaN(d.getTime())) {
         var month = d.getMonth(); // 0-11
         if (d.getFullYear() === new Date().getFullYear()) {
