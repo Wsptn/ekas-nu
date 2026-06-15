@@ -9,7 +9,14 @@ const Laporan = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filterBulan, setFilterBulan] = useState(new Date().getMonth() + 1);
-  const [filterTahun, setFilterTahun] = useState(new Date().getFullYear());
+  const currentYear = new Date().getFullYear();
+  const [filterTahun, setFilterTahun] = useState(currentYear);
+
+  const startYear = 2020;
+  const years = [];
+  for (let y = currentYear; y >= startYear; y--) {
+    years.push(y);
+  }
 
   const fetchLaporan = async () => {
     setLoading(true);
@@ -100,7 +107,7 @@ const Laporan = () => {
     filteredData.forEach(item => {
       totalSaldo += item.nominal;
       const itemData = [
-        item.tanggal,
+        formatDate(item.tanggal),
         item.id,
         item.tipe,
         item.kategori,
@@ -124,7 +131,7 @@ const Laporan = () => {
   const exportExcel = () => {
     const filteredData = getFilteredData();
     let exportData = filteredData.map(item => ({
-      Tanggal: item.tanggal,
+      Tanggal: formatDate(item.tanggal),
       ID: item.id,
       Tipe: item.tipe,
       Kategori: item.kategori,
@@ -143,6 +150,21 @@ const Laporan = () => {
 
   const formatRupiah = (number) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    try {
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return dateString;
+      
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${day}-${month}-${year}`;
+    } catch(e) {
+      return dateString;
+    }
   };
 
   const filteredData = getFilteredData();
@@ -166,7 +188,7 @@ const Laporan = () => {
             <label className="form-label">Tahun</label>
             <select className="form-control" value={filterTahun} onChange={e => setFilterTahun(e.target.value)}>
               <option value="">Semua Tahun</option>
-              {[2024, 2025, 2026, 2027].map(year => (
+              {years.map(year => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
@@ -200,7 +222,7 @@ const Laporan = () => {
               <tbody>
                 {filteredData.length > 0 ? filteredData.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.tanggal}</td>
+                    <td>{formatDate(item.tanggal)}</td>
                     <td>
                       <div>{item.id}</div>
                       <span className={`badge ${item.tipe === 'Pemasukan' ? 'badge-success' : 'badge-danger'}`} style={{ marginTop: '0.25rem' }}>

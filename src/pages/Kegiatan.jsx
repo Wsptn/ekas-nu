@@ -152,8 +152,8 @@ const Kegiatan = () => {
   const handleEditClick = (item) => {
     setFormData({
       nama_kegiatan: item.nama_kegiatan,
-      tanggal_mulai: formatDate(item.tanggal_mulai),
-      tanggal_selesai: formatDate(item.tanggal_selesai),
+      tanggal_mulai: formatDateForInput(item.tanggal_mulai),
+      tanggal_selesai: formatDateForInput(item.tanggal_selesai),
       penanggung_jawab: item.penanggung_jawab
     });
     setEditId(item.id_kegiatan);
@@ -161,7 +161,7 @@ const Kegiatan = () => {
     setShowForm(true);
   };
 
-  const formatDate = (dateString) => {
+  const formatDateForInput = (dateString) => {
     if (!dateString) return '';
     try {
       const d = new Date(dateString);
@@ -171,6 +171,21 @@ const Kegiatan = () => {
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    } catch(e) {
+      return dateString;
+    }
+  };
+
+  const formatDateForDisplay = (dateString) => {
+    if (!dateString) return '';
+    try {
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return dateString;
+      
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${day}-${month}-${year}`;
     } catch(e) {
       return dateString;
     }
@@ -252,8 +267,8 @@ const Kegiatan = () => {
                     <tr key={index}>
                       <td>{item.id_kegiatan}</td>
                       <td className="font-semibold text-primary">{item.nama_kegiatan}</td>
-                      <td>{formatDate(item.tanggal_mulai)}</td>
-                      <td>{formatDate(item.tanggal_selesai)}</td>
+                      <td>{formatDateForDisplay(item.tanggal_mulai)}</td>
+                      <td>{formatDateForDisplay(item.tanggal_selesai)}</td>
                       <td>{item.penanggung_jawab}</td>
                       {canDelete && (
                         <td className="text-center" style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
